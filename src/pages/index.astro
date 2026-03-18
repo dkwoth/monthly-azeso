@@ -1,0 +1,94 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/Header.astro';
+import PostSlider from '@/components/PostSlider';
+import PostCard from '@/components/PostCard.astro';
+
+const allPosts = await getCollection('posts');
+allPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+// 최근 6개월 포스트 (슬라이더)
+const sixMonthsAgo = new Date();
+sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+const recentPosts = allPosts.filter((p) => p.data.date >= sixMonthsAgo);
+const sliderPosts = recentPosts.length > 0 ? recentPosts : allPosts.slice(0, 5);
+
+// 슬라이더 데이터 직렬화
+const sliderData = await Promise.all(
+  sliderPosts.map(async (post) => {
+    const cats = await Promise.all(
+      post.data.categories.map((ref) => getEntry('categories', ref.id))
+    );
+    const membersData = await Promise.all(
+      post.data.members.map((ref) => getEntry('members', ref.id))
+    );
+    return {
+      slug: post.id.replace(/\.[^.]+$/, ''),
+      title: post.data.title,
+      date: post.data.date.toISOString(),
+      image: post.data.image,
+      excerpt: post.data.excerpt,
+      rating: post.data.rating,
+      location: post.data.location,
+      categories: cats.filter(Boolean).map((c) => ({
+        id: c!.id,
+        label: c!.data.label,
+        color: c!.data.color,
+      })),
+      memberNames: membersData.filter(Boolean).map((m) => m!.data.name),
+    };
+  })
+);
+
+// 전체 포스트 카드 데이터
+const cardData = await Promise.all(
+  allPosts.map(async (post) => {
+    const cats = await Promise.all(
+      post.data.categories.map((ref) => getEntry('categories', ref.id))
+    );
+    const membersData = await Promise.all(
+      post.data.members.map((ref) => getEntry('members', ref.id))
+    );
+    return {
+      post,
+      cats: cats.filter(Boolean).map((c) => ({ id: c!.id, label: c!.data.label, color: c!.data.color })),
+      memberNames: membersData.filter(Boolean).map((m) => m!.data.name),
+    };
+  })
+);
+---
+
+<BaseLayout title="홈">
+  <Header />
+  <main class="max-w-6xl mx-auto px-6 py-10">
+    <!-- Slider -->
+    {sliderData.length > 0 && (
+      <section class="mb-14">
+        <PostSlider posts={sliderData} client:load />
+      </section>
+    )}
+
+    <!-- All Posts -->
+    <section>
+      <h2 class="text-2xl font-black uppercase tracking-widest border-b-2 border-black pb-3 mb-8">
+        모든 포스트
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {cardData.map(({ post, cats, memberNames }) => (
+          <PostCard
+            slug={post.id.replace(/\.[^.]+$/, '')}
+            title={post.data.title}
+            date={post.data.date}
+            image={post.data.image}
+            excerpt={post.data.excerpt}
+            rating={post.data.rating}
+            location={post.data.location}
+            categories={cats}
+            memberNames={memberNames}
+          />
+        ))}
+      </div>
+    </section>
+  </main>
+</BaseLayout>

@@ -1,0 +1,57 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/Header.astro';
+import PostGrid from '@/components/PostGrid';
+
+const allPosts = await getCollection('posts');
+allPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const allCategories = await getCollection('categories');
+
+// 포스트 데이터 직렬화
+const postsData = await Promise.all(
+  allPosts.map(async (post) => {
+    const cats = await Promise.all(
+      post.data.categories.map((ref) => getEntry('categories', ref.id))
+    );
+    const membersData = await Promise.all(
+      post.data.members.map((ref) => getEntry('members', ref.id))
+    );
+    return {
+      slug: post.id.replace(/\.[^.]+$/, ''),
+      title: post.data.title,
+      date: post.data.date.toISOString(),
+      image: post.data.image,
+      excerpt: post.data.excerpt,
+      rating: post.data.rating,
+      location: post.data.location,
+      categories: cats.filter(Boolean).map((c) => ({
+        id: c!.id,
+        label: c!.data.label,
+        color: c!.data.color,
+      })),
+      memberNames: membersData.filter(Boolean).map((m) => m!.data.name),
+    };
+  })
+);
+
+const categoriesData = allCategories.map((c) => ({
+  id: c.id,
+  label: c.data.label,
+  color: c.data.color,
+}));
+---
+
+<BaseLayout title="포스트">
+  <Header />
+  <div class="bg-black text-white">
+    <div class="max-w-6xl mx-auto px-6 py-16">
+      <h1 class="text-5xl md:text-7xl font-black uppercase tracking-widest">POSTS</h1>
+      <p class="mt-3 text-gray-400 text-lg">우리가 탐방한 모든 맛집</p>
+    </div>
+  </div>
+  <main class="max-w-6xl mx-auto px-6 py-10">
+    <PostGrid posts={postsData} allCategories={categoriesData} client:load />
+  </main>
+</BaseLayout>

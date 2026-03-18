@@ -1,0 +1,184 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/Header.astro';
+import RatingIcon from '@/components/RatingIcon.astro';
+import CategoryBadge from '@/components/CategoryBadge.astro';
+import PostCard from '@/components/PostCard.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  return posts.map((post) => ({
+    params: { slug: post.id.replace(/\.[^.]+$/, '') },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+
+const { Content } = await post.render();
+
+const categories = await Promise.all(
+  post.data.categories.map((ref) => getEntry('categories', ref.id))
+);
+const author = await getEntry('members', post.data.author.id);
+const membersData = await Promise.all(
+  post.data.members.map((ref) => getEntry('members', ref.id))
+);
+
+const formattedDate = post.data.date.toLocaleDateString('ko-KR', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+// 관련 포스트 (같은 카테고리, 최대 3개)
+const allPosts = await getCollection('posts');
+const currentCatIds = post.data.categories.map((c) => c.id);
+const related = allPosts
+  .filter(
+    (p) =>
+      p.id !== post.id &&
+      p.data.categories.some((c) => currentCatIds.includes(c.id))
+  )
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 3);
+
+const relatedData = await Promise.all(
+  related.map(async (p) => {
+    const cats = await Promise.all(
+      p.data.categories.map((ref) => getEntry('categories', ref.id))
+    );
+    const members = await Promise.all(
+      p.data.members.map((ref) => getEntry('members', ref.id))
+    );
+    return {
+      slug: p.id.replace(/\.[^.]+$/, ''),
+      title: p.data.title,
+      date: p.data.date,
+      image: p.data.image,
+      excerpt: p.data.excerpt,
+      rating: p.data.rating,
+      location: p.data.location,
+      cats: cats.filter(Boolean).map((c) => ({ id: c!.id, label: c!.data.label, color: c!.data.color })),
+      memberNames: members.filter(Boolean).map((m) => m!.data.name),
+    };
+  })
+);
+---
+
+<BaseLayout title={post.data.title} description={post.data.excerpt}>
+  <Header />
+  <main>
+    <div class="max-w-3xl mx-auto px-6 py-10">
+      <!-- Categories -->
+      <div class="flex flex-wrap gap-2 mb-4">
+        {categories.filter(Boolean).map((cat) => (
+          <CategoryBadge label={cat!.data.label} color={cat!.data.color} />
+        ))}
+      </div>
+
+      <!-- Title -->
+      <h1 class="text-3xl md:text-5xl font-black leading-tight mb-6">{post.data.title}</h1>
+
+      <!-- Excerpt -->
+      <p class="text-lg text-gray-600 italic leading-relaxed border-l-4 border-black pl-4 mb-8">
+        {post.data.excerpt}
+      </p>
+
+      <!-- Image -->
+      <div class="overflow-hidden h-[512px] bg-gray-100 mb-8 border-2 border-black">
+        <img
+          src={post.data.image}
+          alt={post.data.title}
+          class="w-full h-full object-cover"
+        />
+      </div>
+
+      <!-- Meta -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10 p-5 bg-gray-50 border border-gray-200">
+        <div>
+          <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">날짜</p>
+          <p class="text-sm font-semibold">{formattedDate}</p>
+        </div>
+        <div>
+          <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">평점</p>
+          <RatingIcon rating={post.data.rating} />
+        </div>
+        <div>
+          <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">작성자</p>
+          <p class="text-sm font-semibold">{author?.data.name ?? post.data.author.id}</p>
+        </div>
+        <div>
+          <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">참여 멤버</p>
+          <p class="text-sm font-semibold">
+            {membersData.filter(Boolean).map((m) => m!.data.name).join(', ')}
+          </p>
+        </div>
+        <div class="col-span-2 md:col-span-4">
+          <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">위치</p>
+          <div class="flex items-center gap-2">
+            <p class="text-sm font-semibold">{post.data.location}</p>
+            {post.data.mapUrl && (
+              <a
+                href={post.data.mapUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 bg-black text-white hover:bg-accent transition-colors duration-200"
+              >
+                지도 보기 →
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <article class="prose prose-lg max-w-none leading-loose
+        prose-headings:font-black prose-headings:uppercase
+        prose-h2:text-2xl prose-h2:border-b-2 prose-h2:border-black prose-h2:pb-2
+        prose-h3:text-xl
+        prose-a:text-accent prose-a:no-underline hover:prose-a:underline
+        prose-strong:font-black">
+        <Content />
+      </article>
+
+      <!-- Back -->
+      <div class="mt-12 pt-8 border-t-2 border-black">
+        <a
+          href="/posts"
+          class="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest hover:text-accent transition-colors duration-200"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+          </svg>
+          모든 포스트로
+        </a>
+      </div>
+    </div>
+
+    <!-- Related posts -->
+    {relatedData.length > 0 && (
+      <div class="border-t-2 border-black mt-4">
+        <div class="max-w-6xl mx-auto px-6 py-10">
+          <h2 class="text-xl font-black uppercase tracking-widest mb-6">관련 포스트</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {relatedData.map((p) => (
+              <PostCard
+                slug={p.slug}
+                title={p.title}
+                date={p.date}
+                image={p.image}
+                excerpt={p.excerpt}
+                rating={p.rating}
+                location={p.location}
+                categories={p.cats}
+                memberNames={p.memberNames}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    )}
+  </main>
+</BaseLayout>

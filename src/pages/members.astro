@@ -1,0 +1,71 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/Header.astro';
+import MemberCard from '@/components/MemberCard.astro';
+
+const allMembers = await getCollection('members');
+const allPosts = await getCollection('posts');
+
+const membersData = await Promise.all(
+  allMembers.map(async (member) => {
+    const favCats = await Promise.all(
+      (member.data.favoriteCategories ?? []).map((ref) => getEntry('categories', ref.id))
+    );
+    const visitCount = allPosts.filter((p) =>
+      p.data.members.some((m) => m.id === member.id)
+    ).length;
+    return {
+      id: member.id,
+      name: member.data.name,
+      bio: member.data.bio,
+      image: member.data.image,
+      favoriteCategories: favCats.filter(Boolean).map((c) => ({
+        id: c!.id,
+        label: c!.data.label,
+        color: c!.data.color,
+      })),
+      visitCount,
+    };
+  })
+);
+
+const totalVisits = allPosts.length;
+---
+
+<BaseLayout title="멤버">
+  <Header />
+  <div class="bg-black text-white">
+    <div class="max-w-6xl mx-auto px-6 py-16">
+      <h1 class="text-5xl md:text-7xl font-black uppercase tracking-widest">MEMBERS</h1>
+      <p class="mt-3 text-gray-400 text-lg">함께 탐방하는 소모임 멤버</p>
+    </div>
+  </div>
+  <main class="max-w-6xl mx-auto px-6 py-10">
+    <!-- Stats -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+      <div class="border-2 border-black p-5 text-center">
+        <p class="text-4xl font-black">{allMembers.length}</p>
+        <p class="text-xs text-gray-500 uppercase tracking-widest mt-1">멤버</p>
+      </div>
+      <div class="border-2 border-black p-5 text-center">
+        <p class="text-4xl font-black">{totalVisits}</p>
+        <p class="text-xs text-gray-500 uppercase tracking-widest mt-1">총 방문</p>
+      </div>
+    </div>
+
+    <!-- Member grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {membersData.map((member) => (
+        <MemberCard
+          id={member.id}
+          name={member.name}
+          bio={member.bio}
+          image={member.image}
+          favoriteCategories={member.favoriteCategories}
+          visitCount={member.visitCount}
+        />
+      ))}
+    </div>
+  </main>
+</BaseLayout>
