@@ -1,3 +1,5 @@
+import { SOJU_GLASS_PATHS } from '../utils/sojuGlass';
+
 interface Props {
   filled: boolean;
   className?: string;
@@ -17,8 +19,8 @@ export default function SojuGlassIcon({ filled, className }: Props) {
       className={className}
       aria-hidden="true"
     >
-      <path d="M4 4 H20 L18 19 H6 Z" fill={filled ? 'currentColor' : 'none'} />
-      <path d="M6 19 V21 H18 V19" />
+      <path d={SOJU_GLASS_PATHS.glass} fill={filled ? 'currentColor' : 'none'} />
+      <path d={SOJU_GLASS_PATHS.base} />
     </svg>
   );
 }
