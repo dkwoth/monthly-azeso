@@ -112,7 +112,7 @@ const relatedData = await Promise.all(
         <div>
           <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">참여 멤버</p>
           <p class="text-sm font-semibold">
-            {membersData.filter(Boolean).map((m) => m!.data.name).join(', ')}
+            {(() => { const names = membersData.filter(Boolean).map((m) => m!.data.name); return <span class="flex flex-wrap gap-x-1">{names.map((name, i) => <span class="whitespace-nowrap">{name}{i < names.length - 1 ? ',' : ''}</span>)}</span>; })()}
           </p>
         </div>
         <div class="col-span-2 md:col-span-4">
