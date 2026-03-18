@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import SojuGlassIcon from './SojuGlassIcon';
 
 interface CategoryData {
   id: string;
@@ -23,25 +24,8 @@ interface Props {
   intervalMs?: number;
 }
 
-function StarIcon({ filled }: { filled: boolean }) {
-  return (
-    <svg
-      width="14"
-      height="14"
-      viewBox="0 0 24 24"
-      fill={filled ? 'currentColor' : 'none'}
-      stroke="currentColor"
-      strokeWidth="2"
-      className={filled ? 'text-[#c0392b]' : 'text-gray-300'}
-      aria-hidden="true"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"
-      />
-    </svg>
-  );
+function RatingIcon({ filled }: { filled: boolean }) {
+  return <SojuGlassIcon filled={filled} className={filled ? 'text-[#c0392b]' : 'text-gray-300'} />;
 }
 
 export default function PostSlider({ posts, intervalMs = 4000 }: Props) {
@@ -107,7 +91,7 @@ export default function PostSlider({ posts, intervalMs = 4000 }: Props) {
             <div className="flex items-center gap-4 mt-4 text-sm text-white/70">
               <span className="flex gap-0.5">
                 {Array.from({ length: 3 }, (_, i) => (
-                  <StarIcon key={i} filled={i < post.rating} />
+                  <RatingIcon key={i} filled={i < post.rating} />
                 ))}
               </span>
               <span>{formattedDate}</span>
