@@ -1,0 +1,21 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --color-accent: #c0392b;
+
+  --font-sans: 'Pretendard', 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif;
+
+  --text-logo: 120px;
+  --text-logo--line-height: 1;
+  --text-logo--font-weight: 900;
+
+  --text-logo-sm: 60px;
+  --text-logo-sm--line-height: 1;
+  --text-logo-sm--font-weight: 900;
+
+  --tracking-logo: 0.05em;
+  --tracking-wide: 0.1em;
+
+  --transition-property-card: transform, box-shadow;
+}

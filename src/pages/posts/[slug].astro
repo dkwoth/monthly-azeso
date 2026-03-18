@@ -1,5 +1,5 @@
 ---
-import { getCollection, getEntry } from 'astro:content';
+import { getCollection, getEntry, render } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Header from '@/components/Header.astro';
 import RatingIcon from '@/components/RatingIcon.astro';
@@ -16,7 +16,7 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 
-const { Content } = await post.render();
+const { Content } = await render(post);
 
 const categories = await Promise.all(
   post.data.categories.map((ref) => getEntry('categories', ref.id))
