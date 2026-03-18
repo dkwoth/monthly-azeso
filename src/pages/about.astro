@@ -1,0 +1,65 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/Header.astro';
+
+const allPosts = await getCollection('posts');
+const allMembers = await getCollection('members');
+---
+
+<BaseLayout title="어바웃" description="맛집 탐방 소모임 AZESO 소개">
+  <Header />
+  <div class="bg-black text-white">
+    <div class="max-w-6xl mx-auto px-6 py-16">
+      <h1 class="text-5xl md:text-7xl font-black uppercase tracking-widest">ABOUT</h1>
+      <p class="mt-3 text-gray-400 text-lg">우리는 누구인가</p>
+    </div>
+  </div>
+  <main class="max-w-3xl mx-auto px-6 py-14">
+    <section class="mb-14">
+      <h2 class="text-2xl font-black uppercase tracking-widest border-b-2 border-black pb-3 mb-6">
+        소모임 소개
+      </h2>
+      <p class="text-lg leading-loose text-gray-700">
+        <strong>AZESO</strong>는 맛집을 사랑하는 사람들이 모인 탐방 소모임입니다.
+        매달 한 곳 이상의 맛집을 함께 방문하고, 그 경험을 기록으로 남깁니다.
+        단순한 리뷰가 아닌, 그 공간에서 나눈 대화와 분위기까지 담아냅니다.
+      </p>
+    </section>
+
+    <section class="mb-14">
+      <h2 class="text-2xl font-black uppercase tracking-widest border-b-2 border-black pb-3 mb-6">
+        운영 방식
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {[
+          { step: '01', title: '장소 선정', desc: '멤버들이 가고 싶은 곳을 추천하고 함께 결정합니다.' },
+          { step: '02', title: '함께 방문', desc: '약속을 잡고 함께 방문합니다.' },
+          { step: '03', title: '기록 공유', desc: '방문 후 후기를 작성하고 이 사이트에 공유합니다.' },
+        ].map(({ step, title, desc }) => (
+          <div class="border-2 border-black p-5 hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
+            <p class="text-4xl font-black text-gray-200 mb-2">{step}</p>
+            <h3 class="text-base font-black uppercase tracking-wide mb-2">{title}</h3>
+            <p class="text-sm text-gray-600 leading-relaxed">{desc}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="mb-14">
+      <h2 class="text-2xl font-black uppercase tracking-widest border-b-2 border-black pb-3 mb-6">
+        현황
+      </h2>
+      <div class="flex gap-8">
+        <div>
+          <p class="text-5xl font-black">{allPosts.length}</p>
+          <p class="text-xs text-gray-500 uppercase tracking-widest mt-1">방문 기록</p>
+        </div>
+        <div>
+          <p class="text-5xl font-black">{allMembers.length}</p>
+          <p class="text-xs text-gray-500 uppercase tracking-widest mt-1">멤버</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
