@@ -30,6 +30,10 @@ const membersData = await Promise.all(
   })
 );
 
+membersData.sort((a, b) =>
+  b.visitCount - a.visitCount || a.name.localeCompare(b.name, 'ko')
+);
+
 const totalVisits = allPosts.length;
 ---
 
