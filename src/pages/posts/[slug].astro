@@ -148,45 +148,15 @@ const relatedData = await Promise.all(
         <Content />
       </article>
 
-      <!-- Author & Members -->
-      {(() => {
-        const otherMembers = membersData.filter((m) => m?.id !== post.data.author.id);
-        return (
-          <div class="mt-12 space-y-8">
-            <div>
-              <AuthorCard
-                name={author?.data.name ?? post.data.author.id}
-                bio={author?.data.bio}
-                image={author?.data.image}
-                favoriteCategories={authorFavoriteCategories.map((c) => ({ id: c!.id, label: c!.data.label, color: c!.data.color }))}
-              />
-            </div>
-            {otherMembers.length > 0 && (
-              <div>
-                <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-4">함께 한 멤버</p>
-                <div class="flex flex-wrap gap-4">
-                  {otherMembers.map((m) => m && (
-                    <div class="flex flex-col items-center gap-1.5">
-                      <div class="w-12 h-12 overflow-hidden bg-gray-100 border border-gray-200">
-                        {m.data.image ? (
-                          <img src={m.data.image} alt={m.data.name} class="w-full h-full object-cover" loading="lazy" />
-                        ) : (
-                          <div class="w-full h-full flex items-center justify-center">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-gray-300">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                            </svg>
-                          </div>
-                        )}
-                      </div>
-                      <span class="text-xs font-semibold">{m.data.name}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        );
-      })()}
+      <!-- Author -->
+      <div class="mt-12">
+        <AuthorCard
+          name={author?.data.name ?? post.data.author.id}
+          bio={author?.data.bio}
+          image={author?.data.image}
+          favoriteCategories={authorFavoriteCategories.map((c) => ({ id: c!.id, label: c!.data.label, color: c!.data.color }))}
+        />
+      </div>
 
       <!-- Back -->
       <div class="mt-10 pt-8 border-t-2 border-black">
