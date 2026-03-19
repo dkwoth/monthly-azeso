@@ -1,15 +1,24 @@
 ---
+import CategoryBadge from './CategoryBadge.astro';
+
+interface CategoryData {
+  id: string;
+  label: string;
+  color?: string;
+}
+
 interface Props {
   name: string;
   bio?: string;
   image?: string;
+  favoriteCategories?: CategoryData[];
 }
 
-const { name, bio, image } = Astro.props;
+const { name, bio, image, favoriteCategories = [] } = Astro.props;
 ---
 
-<div class="flex items-center gap-5 border-2 border-black p-5">
-  <div class="shrink-0 w-20 h-20 overflow-hidden bg-gray-100">
+<div class="flex items-center gap-5 border border-gray-200 bg-gray-50 p-5">
+  <div class="shrink-0 w-24 h-24 overflow-hidden bg-gray-100 border border-gray-200">
     {image ? (
       <img src={image} alt={name} class="w-full h-full object-cover" loading="lazy" />
     ) : (
@@ -20,9 +29,15 @@ const { name, bio, image } = Astro.props;
       </div>
     )}
   </div>
-  <div>
-    <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">작성자</p>
+  <div class="min-w-0">
     <p class="text-lg font-black">{name}</p>
-    {bio && <p class="text-sm text-gray-600 mt-1">{bio}</p>}
+    {bio && <p class="text-sm text-gray-600 mt-0.5">{bio}</p>}
+    {favoriteCategories.length > 0 && (
+      <div class="flex flex-wrap gap-1.5 mt-2">
+        {favoriteCategories.map((cat) => (
+          <CategoryBadge label={cat.label} color={cat.color} />
+        ))}
+      </div>
+    )}
   </div>
 </div>
