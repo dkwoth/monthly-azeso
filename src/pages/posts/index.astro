@@ -9,7 +9,7 @@ allPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
 const allCategories = await getCollection('categories');
 
-// 포스트 데이터 직렬화
+// 후기 데이터 직렬화
 const postsData = await Promise.all(
   allPosts.map(async (post) => {
     const cats = await Promise.all(
@@ -43,11 +43,11 @@ const categoriesData = allCategories.map((c) => ({
 }));
 ---
 
-<BaseLayout title="포스트">
+<BaseLayout title="후기">
   <Header />
   <div class="bg-black text-white">
     <div class="max-w-6xl mx-auto px-6 py-16">
-      <h1 class="text-5xl md:text-7xl font-black uppercase tracking-widest">POSTS</h1>
+      <h1 class="text-5xl md:text-7xl font-black uppercase tracking-widest">REVIEWS</h1>
       <p class="mt-3 text-gray-400 text-lg">우리가 탐방한 모든 맛집</p>
     </div>
   </div>

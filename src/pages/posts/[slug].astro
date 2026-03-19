@@ -32,7 +32,7 @@ const formattedDate = post.data.date.toLocaleDateString('ko-KR', {
   day: 'numeric',
 });
 
-// 관련 포스트 (같은 카테고리, 최대 3개)
+// 관련 후기 (같은 카테고리, 최대 3개)
 const allPosts = await getCollection('posts');
 const currentCatIds = post.data.categories.map((c) => c.id);
 const related = allPosts
@@ -152,7 +152,7 @@ const relatedData = await Promise.all(
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
           </svg>
-          모든 포스트로
+          모든 후기로
         </a>
       </div>
     </div>
@@ -161,7 +161,7 @@ const relatedData = await Promise.all(
     {relatedData.length > 0 && (
       <div class="border-t-2 border-black mt-4">
         <div class="max-w-6xl mx-auto px-6 py-10">
-          <h2 class="text-xl font-black uppercase tracking-widest mb-6">관련 포스트</h2>
+          <h2 class="text-xl font-black uppercase tracking-widest mb-6">관련 후기</h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {relatedData.map((p) => (
               <PostCard
