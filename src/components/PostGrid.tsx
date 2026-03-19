@@ -132,7 +132,7 @@ export default function PostGrid({ posts, allCategories }: Props) {
 
       {/* Grid */}
       {filtered.length === 0 ? (
-        <p className="text-center text-gray-500 py-20 text-sm">해당 카테고리의 포스트가 없습니다.</p>
+        <p className="text-center text-gray-500 py-20 text-sm">해당 카테고리의 후기가 없습니다.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtered.map((post) => (
