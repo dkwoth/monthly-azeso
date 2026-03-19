@@ -1,0 +1,28 @@
+---
+interface Props {
+  name: string;
+  bio?: string;
+  image?: string;
+}
+
+const { name, bio, image } = Astro.props;
+---
+
+<div class="flex items-center gap-5 border-2 border-black p-5">
+  <div class="shrink-0 w-20 h-20 overflow-hidden bg-gray-100">
+    {image ? (
+      <img src={image} alt={name} class="w-full h-full object-cover" loading="lazy" />
+    ) : (
+      <div class="w-full h-full flex items-center justify-center">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" class="text-gray-300">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+        </svg>
+      </div>
+    )}
+  </div>
+  <div>
+    <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">작성자</p>
+    <p class="text-lg font-black">{name}</p>
+    {bio && <p class="text-sm text-gray-600 mt-1">{bio}</p>}
+  </div>
+</div>
