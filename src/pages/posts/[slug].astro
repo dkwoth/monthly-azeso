@@ -69,8 +69,8 @@ const relatedData = await Promise.all(
 
 <BaseLayout title={post.data.title} description={post.data.excerpt}>
   <Header />
-  <main>
-    <div class="max-w-3xl mx-auto px-6 py-10">
+  <main class="max-w-6xl mx-auto px-6">
+    <div class="max-w-3xl mx-auto py-10">
       <!-- Categories -->
       <div class="flex flex-wrap gap-2 mb-4">
         {categories.filter(Boolean).map((cat) => (
@@ -159,9 +159,8 @@ const relatedData = await Promise.all(
 
     <!-- Related posts -->
     {relatedData.length > 0 && (
-      <div class="border-t-2 border-black mt-4">
-        <div class="max-w-6xl mx-auto px-6 py-10">
-          <h2 class="text-xl font-black uppercase tracking-widest mb-6">관련 후기</h2>
+      <div class="mt-16 py-10">
+          <h2 class="text-xl font-black uppercase tracking-widest border-b-2 border-black pb-3 mb-8">관련 후기</h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {relatedData.map((p) => (
               <PostCard
@@ -177,7 +176,6 @@ const relatedData = await Promise.all(
               />
             ))}
           </div>
-        </div>
       </div>
     )}
   </main>
