@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import SojuGlassIcon from './SojuGlassIcon';
 
 interface CategoryData {
@@ -31,6 +31,7 @@ function RatingIcon({ filled }: { filled: boolean }) {
 export default function PostSlider({ posts, intervalMs = 4000 }: Props) {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
+  const touchStartX = useRef<number | null>(null);
 
   const next = useCallback(() => {
     setCurrent((c) => (c + 1) % posts.length);
@@ -46,6 +47,21 @@ export default function PostSlider({ posts, intervalMs = 4000 }: Props) {
     return () => clearInterval(id);
   }, [paused, next, intervalMs, posts.length]);
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    setPaused(true);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) {
+      diff > 0 ? next() : prev();
+    }
+    touchStartX.current = null;
+    setPaused(false);
+  };
+
   if (posts.length === 0) return null;
 
   const post = posts[current];
@@ -60,6 +76,8 @@ export default function PostSlider({ posts, intervalMs = 4000 }: Props) {
       className="relative border-2 border-black overflow-hidden"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
       <a href={`/posts/${post.slug}`} className="block group">
         {/* Image */}
@@ -106,7 +124,7 @@ export default function PostSlider({ posts, intervalMs = 4000 }: Props) {
         <>
           <button
             onClick={prev}
-            className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/50 hover:bg-black text-white flex items-center justify-center transition-colors duration-200"
+            className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/50 hover:bg-black text-white hidden sm:flex items-center justify-center transition-colors duration-200"
             aria-label="이전"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -115,7 +133,7 @@ export default function PostSlider({ posts, intervalMs = 4000 }: Props) {
           </button>
           <button
             onClick={next}
-            className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/50 hover:bg-black text-white flex items-center justify-center transition-colors duration-200"
+            className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/50 hover:bg-black text-white hidden sm:flex items-center justify-center transition-colors duration-200"
             aria-label="다음"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
