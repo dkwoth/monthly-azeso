@@ -34,7 +34,6 @@ membersData.sort((a, b) =>
   b.visitCount - a.visitCount || a.name.localeCompare(b.name, 'ko')
 );
 
-const totalVisits = allPosts.length;
 ---
 
 <BaseLayout title="멤버">
@@ -46,18 +45,6 @@ const totalVisits = allPosts.length;
     </div>
   </div>
   <main class="max-w-6xl mx-auto px-6 py-10">
-    <!-- Stats -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
-      <div class="border-2 border-black p-5 text-center">
-        <p class="text-4xl font-black">{allMembers.length}</p>
-        <p class="text-xs text-gray-500 uppercase tracking-widest mt-1">멤버</p>
-      </div>
-      <div class="border-2 border-black p-5 text-center">
-        <p class="text-4xl font-black">{totalVisits}</p>
-        <p class="text-xs text-gray-500 uppercase tracking-widest mt-1">총 방문</p>
-      </div>
-    </div>
-
     <!-- Member grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {membersData.map((member) => (
