@@ -2,9 +2,17 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Header from '@/components/Header.astro';
+import RatingIcon from '@/components/RatingIcon.astro';
 
 const allPosts = await getCollection('posts');
 const allMembers = await getCollection('members');
+
+const ratings = [
+  { score: 0, desc: '나쁘진 않지만, 내 마음속에만 저장하는 맛.' },
+  { score: 1, desc: '근처라면 다시 찾고 싶은 맛.' },
+  { score: 2, desc: '주변 사람과 함께 즐기고 싶은 맛.' },
+  { score: 3, desc: '만나는 모두에게 자랑하고 싶은 맛.' },
+];
 ---
 
 <BaseLayout title="어바웃" description="맛집 탐방 소모임 AZESO 소개">
@@ -41,6 +49,22 @@ const allMembers = await getCollection('members');
             <p class="text-4xl font-black text-gray-200 mb-2">{step}</p>
             <h3 class="text-base font-black uppercase tracking-wide mb-2">{title}</h3>
             <p class="text-sm text-gray-600 leading-relaxed">{desc}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="mb-14">
+      <h2 class="text-2xl font-black uppercase tracking-widest border-b-2 border-black pb-3 mb-6">
+        평가 기준
+      </h2>
+      <div class="flex flex-col gap-4">
+        {ratings.map(({ score, desc }) => (
+          <div class="flex items-center gap-4">
+            <div class="shrink-0">
+              <RatingIcon rating={score} />
+            </div>
+            <p class="text-sm text-gray-700">{desc}</p>
           </div>
         ))}
       </div>
