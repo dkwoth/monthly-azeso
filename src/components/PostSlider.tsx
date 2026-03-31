@@ -64,13 +64,6 @@ export default function PostSlider({ posts, intervalMs = 4000 }: Props) {
 
   if (posts.length === 0) return null;
 
-  const post = posts[current];
-  const formattedDate = new Date(post.date).toLocaleDateString('ko-KR', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
-
   return (
     <div
       className="relative border-2 border-black overflow-hidden"
@@ -79,45 +72,59 @@ export default function PostSlider({ posts, intervalMs = 4000 }: Props) {
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      <a href={`/posts/${post.slug}`} className="block group">
-        {/* Image */}
-        <div className="relative h-52 sm:h-72 md:h-[480px] bg-gray-100 overflow-hidden">
-          <img
-            src={post.image}
-            alt={post.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-          />
-          {/* Gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-
-          {/* Content overlay */}
-          <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10 text-white">
-            <div className="flex flex-wrap gap-2 mb-3">
-              {post.categories.map((cat) => (
-                <span
-                  key={cat.id}
-                  className="text-[10px] font-bold tracking-widest uppercase px-2 py-0.5 border border-white/60 text-white"
-                >
-                  {cat.label}
-                </span>
-              ))}
+      {/* Sliding track */}
+      <div
+        className="flex transition-transform duration-500 ease-in-out"
+        style={{ transform: `translateX(-${current * 100}%)` }}
+      >
+        {posts.map((p, i) => {
+          const date = new Date(p.date).toLocaleDateString('ko-KR', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          });
+          return (
+            <div key={p.slug} className="relative w-full shrink-0">
+              <a href={`/posts/${p.slug}`} className="block group">
+                <div className="relative h-52 sm:h-72 md:h-[480px] bg-gray-100 overflow-hidden">
+                  <img
+                    src={p.image}
+                    alt={p.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    loading={i === 0 ? 'eager' : 'lazy'}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10 text-white">
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {p.categories.map((cat) => (
+                        <span
+                          key={cat.id}
+                          className="text-[10px] font-bold tracking-widest uppercase px-2 py-0.5 border border-white/60 text-white"
+                        >
+                          {cat.label}
+                        </span>
+                      ))}
+                    </div>
+                    <h2 className="text-2xl md:text-4xl font-black leading-tight mb-2">{p.title}</h2>
+                    <p className="text-sm md:text-base text-white/80 leading-relaxed max-w-2xl line-clamp-2">
+                      {p.excerpt}
+                    </p>
+                    <div className="flex items-center gap-4 mt-4 text-sm text-white/70">
+                      <span className="flex gap-0.5">
+                        {Array.from({ length: 3 }, (_, j) => (
+                          <RatingIcon key={j} filled={j < p.rating} />
+                        ))}
+                      </span>
+                      <span>{date}</span>
+                      <span className="truncate max-w-xs">{p.location}</span>
+                    </div>
+                  </div>
+                </div>
+              </a>
             </div>
-            <h2 className="text-2xl md:text-4xl font-black leading-tight mb-2">{post.title}</h2>
-            <p className="text-sm md:text-base text-white/80 leading-relaxed max-w-2xl line-clamp-2">
-              {post.excerpt}
-            </p>
-            <div className="flex items-center gap-4 mt-4 text-sm text-white/70">
-              <span className="flex gap-0.5">
-                {Array.from({ length: 3 }, (_, i) => (
-                  <RatingIcon key={i} filled={i < post.rating} />
-                ))}
-              </span>
-              <span>{formattedDate}</span>
-              <span className="truncate max-w-xs">{post.location}</span>
-            </div>
-          </div>
-        </div>
-      </a>
+          );
+        })}
+      </div>
 
       {/* Navigation */}
       {posts.length > 1 && (
