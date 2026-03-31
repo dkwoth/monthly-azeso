@@ -10,10 +10,10 @@ const currentPath = Astro.url.pathname;
 ---
 
 <header class="border-b-2 border-black">
-  <div class="max-w-6xl mx-auto px-6 py-8 text-center">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-5 md:py-8 text-center">
     <a href="/" class="block">
       <h1
-        class="text-6xl md:text-8xl font-black tracking-widest uppercase leading-none hover:text-accent transition-colors duration-300"
+        class="text-3xl sm:text-5xl md:text-8xl font-black tracking-wide sm:tracking-widest uppercase leading-none hover:text-accent transition-colors duration-300"
       >
         MONTHLY-AZESO
       </h1>
@@ -23,7 +23,7 @@ const currentPath = Astro.url.pathname;
     </p>
   </div>
   <nav class="border-t-2 border-black">
-    <div class="max-w-6xl mx-auto px-6">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
       <ul class="flex justify-center gap-0">
         {
           navItems.map(({ label, href }) => {
@@ -33,7 +33,7 @@ const currentPath = Astro.url.pathname;
                 <a
                   href={href}
                   class:list={[
-                    'block px-8 py-3 text-xs font-bold tracking-widest uppercase transition-colors duration-200',
+                    'block px-4 sm:px-8 py-3 text-xs font-bold tracking-widest uppercase transition-colors duration-200',
                     isActive
                       ? 'bg-black text-white'
                       : 'text-black hover:bg-black hover:text-white',

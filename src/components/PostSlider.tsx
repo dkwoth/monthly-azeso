@@ -63,7 +63,7 @@ export default function PostSlider({ posts, intervalMs = 4000 }: Props) {
     >
       <a href={`/posts/${post.slug}`} className="block group">
         {/* Image */}
-        <div className="relative h-80 md:h-[480px] bg-gray-100 overflow-hidden">
+        <div className="relative h-52 sm:h-72 md:h-[480px] bg-gray-100 overflow-hidden">
           <img
             src={post.image}
             alt={post.title}
