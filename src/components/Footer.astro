@@ -1,0 +1,49 @@
+---
+const navItems = [
+  { label: 'HOME', href: '/' },
+  { label: 'REVIEWS', href: '/posts' },
+  { label: 'MEMBERS', href: '/members' },
+  { label: 'ABOUT', href: '/about' },
+];
+
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-gray-200">
+  <div class="max-w-6xl mx-auto px-6 py-10">
+    <div class="flex flex-col md:flex-row justify-center gap-16 mb-8">
+
+      <div>
+        <p class="text-xs font-bold tracking-widest uppercase text-gray-500 mb-3">MONTHLY-AZESO</p>
+        <p class="text-sm text-gray-700 leading-relaxed mb-4">맛집 탐방 소모임 AZESO의 방문 기록</p>
+        <a
+          href="https://instagram.com/monthly_azeso"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase border border-gray-400 px-3 py-2 text-gray-700 hover:border-black hover:text-black transition-colors duration-200"
+        >
+          IG &nbsp;@monthly_azeso
+        </a>
+      </div>
+
+      <div>
+        <p class="text-xs font-bold tracking-widest uppercase text-gray-500 mb-3">NAVIGATE</p>
+        <nav class="flex flex-col gap-2">
+          {navItems.map(({ label, href }) => (
+            <a
+              href={href}
+              class="text-sm font-bold tracking-widest uppercase text-gray-700 hover:text-black transition-colors duration-200"
+            >
+              {label}
+            </a>
+          ))}
+        </nav>
+      </div>
+
+    </div>
+
+    <div class="border-t border-gray-200 pt-6 text-center">
+      <p class="text-xs text-gray-500">© {year} MONTHLY-AZESO · All rights reserved</p>
+    </div>
+  </div>
+</footer>

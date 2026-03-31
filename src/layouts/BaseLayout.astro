@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Footer from '../components/Footer.astro';
 
 interface Props {
   title: string;
@@ -25,5 +26,6 @@ const { title, description = '맛집 탐방 소모임 AZESO의 방문 기록' } 
   </head>
   <body class="bg-white text-gray-900 font-sans">
     <slot />
+    <Footer />
   </body>
 </html>
