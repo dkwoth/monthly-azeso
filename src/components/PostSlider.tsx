@@ -115,8 +115,8 @@ export default function PostSlider({ posts, intervalMs = 4000 }: Props) {
                           <RatingIcon key={j} filled={j < p.rating} />
                         ))}
                       </span>
-                      <span>{date}</span>
-                      <span className="truncate max-w-xs">{p.location}</span>
+                      <span className="shrink-0 whitespace-nowrap">{date}</span>
+                      <span className="truncate min-w-0">{p.location}</span>
                     </div>
                   </div>
                 </div>
