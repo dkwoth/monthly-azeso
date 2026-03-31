@@ -92,7 +92,7 @@ const relatedData = await Promise.all(
       </p>
 
       <!-- Image -->
-      <div class="overflow-hidden h-[512px] bg-gray-100 mb-8 border-2 border-black">
+      <div class="overflow-hidden h-52 sm:h-80 md:h-[512px] bg-gray-100 mb-8 border-2 border-black">
         <img
           src={post.data.image}
           alt={post.data.title}
@@ -139,7 +139,7 @@ const relatedData = await Promise.all(
       </div>
 
       <!-- Content -->
-      <article class="prose prose-lg max-w-none leading-loose
+      <article class="prose md:prose-lg max-w-none leading-loose
         prose-headings:font-black prose-headings:uppercase
         prose-h2:text-2xl prose-h2:border-b-2 prose-h2:border-black prose-h2:pb-2
         prose-h3:text-xl
