@@ -5,6 +5,7 @@ import Header from '@/components/Header.astro';
 import RatingIcon from '@/components/RatingIcon.astro';
 import CategoryBadge from '@/components/CategoryBadge.astro';
 import PostCard from '@/components/PostCard.astro';
+import AuthorCard from '@/components/AuthorCard.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
@@ -25,6 +26,10 @@ const author = await getEntry('members', post.data.author.id);
 const membersData = await Promise.all(
   post.data.members.map((ref) => getEntry('members', ref.id))
 );
+
+const authorFavoriteCategories = author?.data.favoriteCategories
+  ? (await Promise.all(author.data.favoriteCategories.map((ref) => getEntry('categories', ref.id)))).filter(Boolean)
+  : [];
 
 const formattedDate = post.data.date.toLocaleDateString('ko-KR', {
   year: 'numeric',
@@ -143,8 +148,18 @@ const relatedData = await Promise.all(
         <Content />
       </article>
 
+      <!-- Author -->
+      <div class="mt-12">
+        <AuthorCard
+          name={author?.data.name ?? post.data.author.id}
+          bio={author?.data.bio}
+          image={author?.data.image}
+          favoriteCategories={authorFavoriteCategories.map((c) => ({ id: c!.id, label: c!.data.label, color: c!.data.color }))}
+        />
+      </div>
+
       <!-- Back -->
-      <div class="mt-12 pt-8 border-t-2 border-black">
+      <div class="mt-10 pt-8 border-t-2 border-black">
         <a
           href="/posts"
           class="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest hover:text-accent transition-colors duration-200"

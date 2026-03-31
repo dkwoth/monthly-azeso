@@ -21,7 +21,7 @@ const allMembers = await getCollection('members');
         소모임 소개
       </h2>
       <p class="text-lg leading-loose text-gray-700">
-        <strong>AZESO</strong>는 맛집을 사랑하는 사람들이 모인 탐방 소모임입니다.
+        <strong class="text-accent">AZESO</strong>는 맛집을 사랑하는 사람들이 모인 탐방 소모임입니다.
         매달 한 곳 이상의 맛집을 함께 방문하고, 그 경험을 기록으로 남깁니다.
         단순한 리뷰가 아닌, 그 공간에서 나눈 대화와 분위기까지 담아냅니다.
       </p>
@@ -38,7 +38,7 @@ const allMembers = await getCollection('members');
           { step: '03', title: '기록 공유', desc: '방문 후 후기를 작성하고 이 사이트에 공유합니다.' },
         ].map(({ step, title, desc }) => (
           <div class="border-2 border-black p-5 hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
-            <p class="text-4xl font-black text-gray-200 mb-2">{step}</p>
+            <p class="text-4xl font-black text-gray-400 mb-2">{step}</p>
             <h3 class="text-base font-black uppercase tracking-wide mb-2">{title}</h3>
             <p class="text-sm text-gray-600 leading-relaxed">{desc}</p>
           </div>
