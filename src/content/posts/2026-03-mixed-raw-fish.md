@@ -15,6 +15,8 @@ members:
   - donguk
 author: seokhyun
 image: "/images/posts/2026-03-mixed-raw-fish.jpg"
+images:
+  - "/images/posts/2026-03-mixed-raw-fish.jpg"
 excerpt: "오래된 간판에 걸맞은 깊은 내공"
 ---
 
