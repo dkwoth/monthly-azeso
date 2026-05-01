@@ -14,9 +14,13 @@ members:
   - juyoung
   - donguk
 author: seokhyun
-image: "/images/posts/2026-03-mixed-raw-fish.jpg"
+image: "/images/posts/2026-03-mixed-raw-fish/thumbnail.jpg"
 images:
-  - "/images/posts/2026-03-mixed-raw-fish.jpg"
+  - "/images/posts/2026-03-mixed-raw-fish/exterior.jpg"
+  - "/images/posts/2026-03-mixed-raw-fish/thumbnail.jpg"
+  - "/images/posts/2026-03-mixed-raw-fish/rice.jpg"
+  - "/images/posts/2026-03-mixed-raw-fish/half-dried-saury.jpg"
+  - "/images/posts/2026-03-mixed-raw-fish/octopus.jpg"
 excerpt: "오래된 간판에 걸맞은 깊은 내공"
 ---
 
