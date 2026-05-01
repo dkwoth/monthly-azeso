@@ -32,6 +32,7 @@ const posts = defineCollection({
     members: z.array(reference('members')),
     author: reference('members'),
     image: z.string(),
+    images: z.array(z.string()).optional(),
     excerpt: z.string(),
   }),
 });

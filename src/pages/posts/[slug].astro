@@ -6,6 +6,7 @@ import RatingIcon from '@/components/RatingIcon.astro';
 import CategoryBadge from '@/components/CategoryBadge.astro';
 import PostCard from '@/components/PostCard.astro';
 import AuthorCard from '@/components/AuthorCard.astro';
+import PostImageGallery from '@/components/PostImageGallery.tsx';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
@@ -92,13 +93,17 @@ const relatedData = await Promise.all(
       </p>
 
       <!-- Image -->
-      <div class="overflow-hidden h-52 sm:h-80 md:h-[512px] bg-gray-100 mb-8 border-2 border-black">
-        <img
-          src={post.data.image}
-          alt={post.data.title}
-          class="w-full h-full object-cover"
-        />
-      </div>
+      {post.data.images && post.data.images.length > 0 ? (
+        <PostImageGallery client:load images={post.data.images} alt={post.data.title} />
+      ) : (
+        <div class="overflow-hidden h-52 sm:h-80 md:h-[512px] bg-gray-100 mb-8 border-2 border-black">
+          <img
+            src={post.data.image}
+            alt={post.data.title}
+            class="w-full h-full object-cover"
+          />
+        </div>
+      )}
 
       <!-- Meta -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10 p-5 bg-gray-50 border border-gray-200">
