@@ -1,6 +1,6 @@
 ---
 title: "옛집한우허파"
-date: 2025-11-15
+date: 2025-12-9
 categories:
   - korean
   - soup
