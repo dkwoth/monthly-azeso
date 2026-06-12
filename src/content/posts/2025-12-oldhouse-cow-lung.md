@@ -1,6 +1,6 @@
 ---
 title: "옛집한우허파"
-date: 2025-12-9
+date: 2025-12-09
 categories:
   - korean
   - soup
@@ -16,7 +16,7 @@ members:
   - juyoung
   - seokhyun
 author: miryeong
-image: "/images/posts/2025-11-oldhouse-cow-lung.jpg"
+image: "/images/posts/2025-12-oldhouse-cow-lung.jpg"
 excerpt: "허파 뒤집어지는 맛. 서울에서 가장 진한 국물의 허파탕집."
 ---
 
