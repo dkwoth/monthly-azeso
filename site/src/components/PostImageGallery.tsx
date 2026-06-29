@@ -1,46 +1,48 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
+'use client'
+
+import {useState, useCallback, useRef, useEffect} from 'react'
 
 interface Props {
-  images: string[];
-  alt: string;
+  images: string[]
+  alt: string
 }
 
-export default function PostImageGallery({ images, alt }: Props) {
-  const [current, setCurrent] = useState(0);
-  const touchStartX = useRef<number | null>(null);
+export default function PostImageGallery({images, alt}: Props) {
+  const [current, setCurrent] = useState(0)
+  const touchStartX = useRef<number | null>(null)
 
   const next = useCallback(() => {
-    setCurrent((c) => (c + 1) % images.length);
-  }, [images.length]);
+    setCurrent((c) => (c + 1) % images.length)
+  }, [images.length])
 
   const prev = useCallback(() => {
-    setCurrent((c) => (c - 1 + images.length) % images.length);
-  }, [images.length]);
+    setCurrent((c) => (c - 1 + images.length) % images.length)
+  }, [images.length])
 
   useEffect(() => {
-    if (images.length <= 1) return;
+    if (images.length <= 1) return
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft') prev();
-      else if (e.key === 'ArrowRight') next();
-    };
-    window.addEventListener('keydown', handleKey);
-    return () => window.removeEventListener('keydown', handleKey);
-  }, [next, prev, images.length]);
+      if (e.key === 'ArrowLeft') prev()
+      else if (e.key === 'ArrowRight') next()
+    }
+    window.addEventListener('keydown', handleKey)
+    return () => window.removeEventListener('keydown', handleKey)
+  }, [next, prev, images.length])
 
   const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
+    touchStartX.current = e.touches[0].clientX
+  }
 
   const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartX.current === null) return;
-    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (touchStartX.current === null) return
+    const diff = touchStartX.current - e.changedTouches[0].clientX
     if (Math.abs(diff) > 50) {
-      diff > 0 ? next() : prev();
+      diff > 0 ? next() : prev()
     }
-    touchStartX.current = null;
-  };
+    touchStartX.current = null
+  }
 
-  if (images.length === 0) return null;
+  if (images.length === 0) return null
 
   return (
     <div
@@ -51,10 +53,11 @@ export default function PostImageGallery({ images, alt }: Props) {
       {/* Sliding track */}
       <div
         className="flex h-full transition-transform duration-500 ease-in-out"
-        style={{ transform: `translateX(-${current * 100}%)` }}
+        style={{transform: `translateX(-${current * 100}%)`}}
       >
         {images.map((src, i) => (
           <div key={i} className="w-full h-full shrink-0">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={src}
               alt={`${alt} ${i + 1}`}
@@ -109,5 +112,5 @@ export default function PostImageGallery({ images, alt }: Props) {
         </>
       )}
     </div>
-  );
+  )
 }

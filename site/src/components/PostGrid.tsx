@@ -1,44 +1,26 @@
-import { useState } from 'react';
-import SojuGlassIcon from './SojuGlassIcon';
+'use client'
 
-interface CategoryData {
-  id: string;
-  label: string;
-  color?: string;
-}
-
-interface GridPost {
-  slug: string;
-  title: string;
-  date: string;
-  image: string;
-  excerpt: string;
-  rating: number;
-  location: string;
-  categories: CategoryData[];
-  memberNames: string[];
-}
+import {useState} from 'react'
+import Link from 'next/link'
+import {formatDate} from '@/lib/format'
+import type {Category, PostCardData} from '@/lib/types'
+import SojuGlassIcon from './SojuGlassIcon'
 
 interface Props {
-  posts: GridPost[];
-  allCategories: CategoryData[];
+  posts: PostCardData[]
+  allCategories: Category[]
 }
 
-function RatingIcon({ filled }: { filled: boolean }) {
-  return <SojuGlassIcon filled={filled} className={filled ? 'text-[#c0392b]' : 'text-gray-300'} />;
+function RatingIcon({filled}: {filled: boolean}) {
+  return <SojuGlassIcon filled={filled} className={filled ? 'text-[#c0392b]' : 'text-gray-300'} />
 }
 
-function PostCard({ post }: { post: GridPost }) {
-  const formattedDate = new Date(post.date).toLocaleDateString('ko-KR', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
-
+function PostCard({post}: {post: PostCardData}) {
   return (
     <article className="group border-2 border-black bg-white hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
-      <a href={`/posts/${post.slug}`} className="block">
+      <Link href={`/posts/${post.slug}`} className="block">
         <div className="overflow-hidden h-52 bg-gray-100">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={post.image}
             alt={post.title}
@@ -52,7 +34,7 @@ function PostCard({ post }: { post: GridPost }) {
               <span
                 key={cat.id}
                 className="inline-block text-[10px] font-bold tracking-widest uppercase px-2 py-0.5 border border-current"
-                style={cat.color ? { color: cat.color, borderColor: cat.color } : undefined}
+                style={cat.color ? {color: cat.color, borderColor: cat.color} : undefined}
               >
                 {cat.label}
               </span>
@@ -64,11 +46,11 @@ function PostCard({ post }: { post: GridPost }) {
           <p className="text-sm text-gray-600 leading-relaxed mb-4 line-clamp-2">{post.excerpt}</p>
           <div className="flex items-center justify-between text-xs text-gray-500">
             <span className="flex gap-0.5">
-              {Array.from({ length: 3 }, (_, i) => (
+              {Array.from({length: 3}, (_, i) => (
                 <RatingIcon key={i} filled={i < post.rating} />
               ))}
             </span>
-            <time dateTime={post.date}>{formattedDate}</time>
+            <time dateTime={post.date}>{formatDate(post.date)}</time>
           </div>
           <div className="mt-3 pt-3 border-t border-gray-100 flex items-center gap-1.5 text-xs text-gray-500">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0">
@@ -86,18 +68,18 @@ function PostCard({ post }: { post: GridPost }) {
             </div>
           )}
         </div>
-      </a>
+      </Link>
     </article>
-  );
+  )
 }
 
-export default function PostGrid({ posts, allCategories }: Props) {
-  const [activeCategory, setActiveCategory] = useState<string>('all');
+export default function PostGrid({posts, allCategories}: Props) {
+  const [activeCategory, setActiveCategory] = useState<string>('all')
 
   const filtered =
     activeCategory === 'all'
       ? posts
-      : posts.filter((p) => p.categories.some((c) => c.id === activeCategory));
+      : posts.filter((p) => p.categories.some((c) => c.id === activeCategory))
 
   return (
     <div>
@@ -112,8 +94,8 @@ export default function PostGrid({ posts, allCategories }: Props) {
           전체 ({posts.length})
         </button>
         {allCategories.map((cat) => {
-          const count = posts.filter((p) => p.categories.some((c) => c.id === cat.id)).length;
-          if (count === 0) return null;
+          const count = posts.filter((p) => p.categories.some((c) => c.id === cat.id)).length
+          if (count === 0) return null
           return (
             <button
               key={cat.id}
@@ -126,7 +108,7 @@ export default function PostGrid({ posts, allCategories }: Props) {
             >
               {cat.label} ({count})
             </button>
-          );
+          )
         })}
       </div>
 
@@ -141,5 +123,5 @@ export default function PostGrid({ posts, allCategories }: Props) {
         </div>
       )}
     </div>
-  );
+  )
 }
