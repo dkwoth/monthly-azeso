@@ -27,3 +27,8 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          # 프로젝트별 설정은 레포에 하드코딩하지 않고 GitHub Actions Variables 에서 주입
+          # (Settings → Secrets and variables → Actions → Variables)
+          NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ vars.NEXT_PUBLIC_SANITY_PROJECT_ID }}
+          NEXT_PUBLIC_SANITY_DATASET: ${{ vars.NEXT_PUBLIC_SANITY_DATASET }}

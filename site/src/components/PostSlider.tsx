@@ -1,68 +1,55 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
-import SojuGlassIcon from './SojuGlassIcon';
+'use client'
 
-interface CategoryData {
-  id: string;
-  label: string;
-  color?: string;
-}
-
-interface SliderPost {
-  slug: string;
-  title: string;
-  date: string;
-  image: string;
-  excerpt: string;
-  rating: number;
-  location: string;
-  categories: CategoryData[];
-  memberNames: string[];
-}
+import {useState, useEffect, useCallback, useRef} from 'react'
+import Link from 'next/link'
+import {formatDate} from '@/lib/format'
+import type {PostCardData} from '@/lib/types'
+import SojuGlassIcon from './SojuGlassIcon'
 
 interface Props {
-  posts: SliderPost[];
-  intervalMs?: number;
+  posts: PostCardData[]
+  intervalMs?: number
 }
 
-function RatingIcon({ filled }: { filled: boolean }) {
-  return <SojuGlassIcon filled={filled} className={filled ? 'text-[#c0392b]' : 'text-gray-300'} />;
+function RatingIcon({filled}: {filled: boolean}) {
+  return <SojuGlassIcon filled={filled} className={filled ? 'text-[#c0392b]' : 'text-gray-300'} />
 }
 
-export default function PostSlider({ posts, intervalMs = 4000 }: Props) {
-  const [current, setCurrent] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const touchStartX = useRef<number | null>(null);
+export default function PostSlider({posts, intervalMs = 4000}: Props) {
+  const [current, setCurrent] = useState(0)
+  const [paused, setPaused] = useState(false)
+  const touchStartX = useRef<number | null>(null)
 
   const next = useCallback(() => {
-    setCurrent((c) => (c + 1) % posts.length);
-  }, [posts.length]);
+    setCurrent((c) => (c + 1) % posts.length)
+  }, [posts.length])
 
   const prev = useCallback(() => {
-    setCurrent((c) => (c - 1 + posts.length) % posts.length);
-  }, [posts.length]);
+    setCurrent((c) => (c - 1 + posts.length) % posts.length)
+  }, [posts.length])
 
   useEffect(() => {
-    if (paused || posts.length <= 1) return;
-    const id = setInterval(next, intervalMs);
-    return () => clearInterval(id);
-  }, [paused, next, intervalMs, posts.length]);
+    if (paused || posts.length <= 1) return
+    const id = setInterval(next, intervalMs)
+    return () => clearInterval(id)
+  }, [paused, next, intervalMs, posts.length])
 
   const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-    setPaused(true);
-  };
+    touchStartX.current = e.touches[0].clientX
+    setPaused(true)
+  }
 
   const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartX.current === null) return;
-    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (touchStartX.current === null) return
+    const diff = touchStartX.current - e.changedTouches[0].clientX
     if (Math.abs(diff) > 50) {
-      diff > 0 ? next() : prev();
+      diff > 0 ? next() : prev()
     }
-    touchStartX.current = null;
-    setPaused(false);
-  };
+    touchStartX.current = null
+    setPaused(false)
+  }
 
-  if (posts.length === 0) return null;
+  if (posts.length === 0) return null
 
   return (
     <div
@@ -75,55 +62,49 @@ export default function PostSlider({ posts, intervalMs = 4000 }: Props) {
       {/* Sliding track */}
       <div
         className="flex transition-transform duration-500 ease-in-out"
-        style={{ transform: `translateX(-${current * 100}%)` }}
+        style={{transform: `translateX(-${current * 100}%)`}}
       >
-        {posts.map((p, i) => {
-          const date = new Date(p.date).toLocaleDateString('ko-KR', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-          });
-          return (
-            <div key={p.slug} className="relative w-full shrink-0">
-              <a href={`/posts/${p.slug}`} className="block group">
-                <div className="relative h-52 sm:h-72 md:h-[480px] bg-gray-100 overflow-hidden">
-                  <img
-                    src={p.image}
-                    alt={p.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                    loading={i === 0 ? 'eager' : 'lazy'}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10 text-white">
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      {p.categories.map((cat) => (
-                        <span
-                          key={cat.id}
-                          className="text-[10px] font-bold tracking-widest uppercase px-2 py-0.5 border border-white/60 text-white"
-                        >
-                          {cat.label}
-                        </span>
-                      ))}
-                    </div>
-                    <h2 className="text-2xl md:text-4xl font-black leading-tight mb-2">{p.title}</h2>
-                    <p className="text-sm md:text-base text-white/80 leading-relaxed max-w-2xl line-clamp-2">
-                      {p.excerpt}
-                    </p>
-                    <div className="flex items-center gap-4 mt-4 text-sm text-white/70">
-                      <span className="flex gap-0.5">
-                        {Array.from({ length: 3 }, (_, j) => (
-                          <RatingIcon key={j} filled={j < p.rating} />
-                        ))}
+        {posts.map((p, i) => (
+          <div key={p.slug} className="relative w-full shrink-0">
+            <Link href={`/posts/${p.slug}`} className="block group">
+              <div className="relative h-52 sm:h-72 md:h-[480px] bg-gray-100 overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={p.image}
+                  alt={p.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10 text-white">
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {p.categories.map((cat) => (
+                      <span
+                        key={cat.id}
+                        className="text-[10px] font-bold tracking-widest uppercase px-2 py-0.5 border border-white/60 text-white"
+                      >
+                        {cat.label}
                       </span>
-                      <span className="shrink-0 whitespace-nowrap">{date}</span>
-                      <span className="truncate min-w-0">{p.location}</span>
-                    </div>
+                    ))}
+                  </div>
+                  <h2 className="text-2xl md:text-4xl font-black leading-tight mb-2">{p.title}</h2>
+                  <p className="text-sm md:text-base text-white/80 leading-relaxed max-w-2xl line-clamp-2">
+                    {p.excerpt}
+                  </p>
+                  <div className="flex items-center gap-4 mt-4 text-sm text-white/70">
+                    <span className="flex gap-0.5">
+                      {Array.from({length: 3}, (_, j) => (
+                        <RatingIcon key={j} filled={j < p.rating} />
+                      ))}
+                    </span>
+                    <span className="shrink-0 whitespace-nowrap">{formatDate(p.date)}</span>
+                    <span className="truncate min-w-0">{p.location}</span>
                   </div>
                 </div>
-              </a>
-            </div>
-          );
-        })}
+              </div>
+            </Link>
+          </div>
+        ))}
       </div>
 
       {/* Navigation */}
@@ -164,5 +145,5 @@ export default function PostSlider({ posts, intervalMs = 4000 }: Props) {
         </>
       )}
     </div>
-  );
+  )
 }
