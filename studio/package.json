@@ -9,8 +9,7 @@
     "deploy": "sanity deploy",
     "deploy-graphql": "sanity graphql deploy",
     "dev": "sanity dev",
-    "start": "sanity start",
-    "import": "sanity exec scripts/importContent.ts --with-user-token"
+    "start": "sanity start"
   },
   "keywords": [
     "sanity"
@@ -24,12 +23,9 @@
   },
   "devDependencies": {
     "@sanity/eslint-config-studio": "^6.0.0",
-    "@types/js-yaml": "^4.0.9",
     "@types/node": "^26.0.1",
     "@types/react": "^19.2.14",
     "eslint": "^9.28",
-    "gray-matter": "^4.0.3",
-    "js-yaml": "^5.2.0",
     "prettier": "^3.5",
     "typescript": "^5.8"
   },

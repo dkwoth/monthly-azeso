@@ -64,10 +64,6 @@ npm run deploy        # = sanity deploy
 - 로그인된 Sanity 세션을 사용합니다(`npx sanity login`).
 - `autoUpdates: true`는 Sanity 프레임워크만 자동 갱신하며, 우리가 만든 스키마/도구 변경은 위 `npm run deploy`로 반영해야 합니다.
 
-## 콘텐츠 마이그레이션 (참고, 1회성)
-
-초기 Astro 콘텐츠를 Sanity로 옮긴 스크립트가 `studio/scripts/importContent.ts`에 있습니다(`cd studio && npm run import`). 멱등하지만, 원본(구 Astro `site/src/content`·`public`)은 현재 git 히스토리에만 있습니다.
-
 ## 작성자 자동 지정
 
 각 `member` 문서의 **"Sanity 계정 ID"** 필드에 로그인 계정 ID를 넣어두면(Studio 좌측 상단 **"내 계정 ID"** 도구에서 확인), 그 사람이 새 후기를 만들 때 작성자가 자동으로 지정됩니다. 글 쓰는 사람은 `manage` → Members 에서 **Editor**로 초대합니다.
