@@ -63,7 +63,3 @@ npm run deploy        # = sanity deploy
 - 최초 1회는 **호스트네임**을 물어봅니다(예: `monthly-azeso` → `https://monthly-azeso.sanity.studio`). 이후 같은 명령으로 갱신하며, 호스트네임은 자동 기억됩니다.
 - 로그인된 Sanity 세션을 사용합니다(`npx sanity login`).
 - `autoUpdates: true`는 Sanity 프레임워크만 자동 갱신하며, 우리가 만든 스키마/도구 변경은 위 `npm run deploy`로 반영해야 합니다.
-
-## 작성자 자동 지정
-
-각 `member` 문서의 **"Sanity 계정 ID"** 필드에 로그인 계정 ID를 넣어두면(Studio 좌측 상단 **"내 계정 ID"** 도구에서 확인), 그 사람이 새 후기를 만들 때 작성자가 자동으로 지정됩니다. 글 쓰는 사람은 `manage` → Members 에서 **Editor**로 초대합니다.
