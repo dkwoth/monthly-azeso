@@ -41,17 +41,19 @@ export default async function HomePage() {
       <Header />
       <main className="max-w-6xl mx-auto px-6 py-10">
         {sliderPosts.length > 0 && (
-          <section className="relative mb-16">
+          <section className="mb-16">
             <PostSlider posts={sliderPosts} />
-            <Link
-              href="/posts"
-              className="absolute top-0 right-0 z-10 flex items-center gap-2 bg-black text-white text-xs font-bold tracking-widest uppercase px-4 py-2 hover:bg-accent transition-colors duration-200"
-            >
-              All Reviews
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-              </svg>
-            </Link>
+            <div className="mt-3 flex justify-end">
+              <Link
+                href="/posts"
+                className="inline-flex items-center gap-1.5 text-sm font-bold tracking-wide text-gray-600 hover:text-accent transition-colors duration-200"
+              >
+                모든 후기
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                </svg>
+              </Link>
+            </div>
           </section>
         )}
 
