@@ -111,8 +111,8 @@ export default async function HomePage() {
           <div className="flex flex-col gap-4">
             {ratings.map(({score, desc}) => (
               <div key={score} className="flex items-center gap-4">
-                <div className="shrink-0">
-                  <RatingIcon rating={score} />
+                <div className="shrink-0 flex items-center">
+                  <RatingIcon rating={score} width={16} height={17} />
                 </div>
                 <p className="text-base text-gray-700">{desc}</p>
               </div>

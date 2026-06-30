@@ -6,20 +6,22 @@ const SOJU_GLASS_PATHS = {
 interface Props {
   filled: boolean
   className?: string
+  width?: number
+  height?: number
 }
 
-export default function SojuGlassIcon({filled, className}: Props) {
+export default function SojuGlassIcon({filled, className, width = 13, height = 14}: Props) {
   return (
     <svg
-      width="13"
-      height="14"
+      width={width}
+      height={height}
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
       strokeWidth="1.8"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className={className}
+      className={['block', className].filter(Boolean).join(' ')}
       aria-hidden="true"
     >
       <path d={SOJU_GLASS_PATHS.glass} fill={filled ? 'currentColor' : 'none'} />
