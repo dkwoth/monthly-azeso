@@ -57,16 +57,34 @@ export default async function HomePage() {
           </section>
         )}
 
-        <section className="mb-14">
-          <h2 className="text-2xl font-black uppercase tracking-widest border-b-2 border-black pb-3 mb-6">
-            소모임 소개
-          </h2>
-          <p className="text-lg leading-loose text-gray-700">
-            <strong className="text-accent">AZESO</strong>는 맛집을 사랑하는 사람들이 모인 탐방
-            소모임입니다. 매달 한 곳 이상의 맛집을 함께 방문하고, 그 경험을 기록으로 남깁니다. 단순한
-            리뷰가 아닌, 그 공간에서 나눈 대화와 분위기까지 담아냅니다.
-          </p>
-        </section>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 mb-14">
+          <section className="md:col-span-2">
+            <h2 className="text-2xl font-black uppercase tracking-widest border-b-2 border-black pb-3 mb-6">
+              소모임 소개
+            </h2>
+            <p className="text-lg leading-loose text-gray-700">
+              <strong className="text-accent">AZESO</strong>는 맛집을 사랑하는 사람들이 모인 탐방
+              소모임입니다. 매달 한 곳 이상의 맛집을 함께 방문하고, 그 경험을 기록으로 남깁니다. 단순한
+              리뷰가 아닌, 그 공간에서 나눈 대화와 분위기까지 담아냅니다.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-black uppercase tracking-widest border-b-2 border-black pb-3 mb-6">
+              현황
+            </h2>
+            <div className="flex gap-8 md:flex-col md:gap-6">
+              <div>
+                <p className="text-5xl font-black">{postCount}</p>
+                <p className="text-xs text-gray-500 uppercase tracking-widest mt-1">방문 기록</p>
+              </div>
+              <div>
+                <p className="text-5xl font-black">{memberCount}</p>
+                <p className="text-xs text-gray-500 uppercase tracking-widest mt-1">멤버</p>
+              </div>
+            </div>
+          </section>
+        </div>
 
         <section className="mb-14">
           <h2 className="text-2xl font-black uppercase tracking-widest border-b-2 border-black pb-3 mb-6">
@@ -99,22 +117,6 @@ export default async function HomePage() {
                 <p className="text-sm text-gray-700">{desc}</p>
               </div>
             ))}
-          </div>
-        </section>
-
-        <section className="mb-14">
-          <h2 className="text-2xl font-black uppercase tracking-widest border-b-2 border-black pb-3 mb-6">
-            현황
-          </h2>
-          <div className="flex gap-8">
-            <div>
-              <p className="text-5xl font-black">{postCount}</p>
-              <p className="text-xs text-gray-500 uppercase tracking-widest mt-1">방문 기록</p>
-            </div>
-            <div>
-              <p className="text-5xl font-black">{memberCount}</p>
-              <p className="text-xs text-gray-500 uppercase tracking-widest mt-1">멤버</p>
-            </div>
           </div>
         </section>
       </main>
