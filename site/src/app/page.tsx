@@ -57,68 +57,66 @@ export default async function HomePage() {
           </section>
         )}
 
-        <div className="max-w-3xl mx-auto">
-          <section className="mb-14">
-            <h2 className="text-2xl font-black uppercase tracking-widest border-b-2 border-black pb-3 mb-6">
-              소모임 소개
-            </h2>
-            <p className="text-lg leading-loose text-gray-700">
-              <strong className="text-accent">AZESO</strong>는 맛집을 사랑하는 사람들이 모인 탐방
-              소모임입니다. 매달 한 곳 이상의 맛집을 함께 방문하고, 그 경험을 기록으로 남깁니다. 단순한
-              리뷰가 아닌, 그 공간에서 나눈 대화와 분위기까지 담아냅니다.
-            </p>
-          </section>
+        <section className="mb-14">
+          <h2 className="text-2xl font-black uppercase tracking-widest border-b-2 border-black pb-3 mb-6">
+            소모임 소개
+          </h2>
+          <p className="text-lg leading-loose text-gray-700">
+            <strong className="text-accent">AZESO</strong>는 맛집을 사랑하는 사람들이 모인 탐방
+            소모임입니다. 매달 한 곳 이상의 맛집을 함께 방문하고, 그 경험을 기록으로 남깁니다. 단순한
+            리뷰가 아닌, 그 공간에서 나눈 대화와 분위기까지 담아냅니다.
+          </p>
+        </section>
 
-          <section className="mb-14">
-            <h2 className="text-2xl font-black uppercase tracking-widest border-b-2 border-black pb-3 mb-6">
-              운영 방식
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {steps.map(({step, title, desc}) => (
-                <div
-                  key={step}
-                  className="border-2 border-black p-5 hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
-                >
-                  <p className="text-4xl font-black text-gray-400 mb-2">{step}</p>
-                  <h3 className="text-base font-black uppercase tracking-wide mb-2">{title}</h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">{desc}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section className="mb-14">
-            <h2 className="text-2xl font-black uppercase tracking-widest border-b-2 border-black pb-3 mb-6">
-              평가 기준
-            </h2>
-            <div className="flex flex-col gap-4">
-              {ratings.map(({score, desc}) => (
-                <div key={score} className="flex items-center gap-4">
-                  <div className="shrink-0">
-                    <RatingIcon rating={score} />
-                  </div>
-                  <p className="text-sm text-gray-700">{desc}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section className="mb-14">
-            <h2 className="text-2xl font-black uppercase tracking-widest border-b-2 border-black pb-3 mb-6">
-              현황
-            </h2>
-            <div className="flex gap-8">
-              <div>
-                <p className="text-5xl font-black">{postCount}</p>
-                <p className="text-xs text-gray-500 uppercase tracking-widest mt-1">방문 기록</p>
+        <section className="mb-14">
+          <h2 className="text-2xl font-black uppercase tracking-widest border-b-2 border-black pb-3 mb-6">
+            운영 방식
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {steps.map(({step, title, desc}) => (
+              <div
+                key={step}
+                className="border-2 border-black p-5 hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
+              >
+                <p className="text-4xl font-black text-gray-400 mb-2">{step}</p>
+                <h3 className="text-base font-black uppercase tracking-wide mb-2">{title}</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">{desc}</p>
               </div>
-              <div>
-                <p className="text-5xl font-black">{memberCount}</p>
-                <p className="text-xs text-gray-500 uppercase tracking-widest mt-1">멤버</p>
+            ))}
+          </div>
+        </section>
+
+        <section className="mb-14">
+          <h2 className="text-2xl font-black uppercase tracking-widest border-b-2 border-black pb-3 mb-6">
+            평가 기준
+          </h2>
+          <div className="flex flex-col gap-4">
+            {ratings.map(({score, desc}) => (
+              <div key={score} className="flex items-center gap-4">
+                <div className="shrink-0">
+                  <RatingIcon rating={score} />
+                </div>
+                <p className="text-sm text-gray-700">{desc}</p>
               </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="mb-14">
+          <h2 className="text-2xl font-black uppercase tracking-widest border-b-2 border-black pb-3 mb-6">
+            현황
+          </h2>
+          <div className="flex gap-8">
+            <div>
+              <p className="text-5xl font-black">{postCount}</p>
+              <p className="text-xs text-gray-500 uppercase tracking-widest mt-1">방문 기록</p>
             </div>
-          </section>
-        </div>
+            <div>
+              <p className="text-5xl font-black">{memberCount}</p>
+              <p className="text-xs text-gray-500 uppercase tracking-widest mt-1">멤버</p>
+            </div>
+          </div>
+        </section>
       </main>
     </>
   )
