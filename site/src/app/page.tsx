@@ -30,11 +30,8 @@ export default async function HomePage() {
     getStats(),
   ])
 
-  // 최근 6개월 포스트 (슬라이더)
-  const sixMonthsAgo = new Date()
-  sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6)
-  const recentPosts = allPosts.filter((p) => new Date(p.date) >= sixMonthsAgo)
-  const sliderPosts = recentPosts.length > 0 ? recentPosts : allPosts.slice(0, 5)
+  // 최신 5개 포스트 (슬라이더)
+  const sliderPosts = allPosts.slice(0, 5)
 
   return (
     <>
