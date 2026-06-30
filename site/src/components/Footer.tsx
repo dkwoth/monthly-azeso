@@ -4,7 +4,6 @@ const navItems = [
   {label: 'HOME', href: '/'},
   {label: 'REVIEWS', href: '/posts'},
   {label: 'MEMBERS', href: '/members'},
-  {label: 'ABOUT', href: '/about'},
 ]
 
 export default function Footer() {
