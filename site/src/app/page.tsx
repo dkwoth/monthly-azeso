@@ -114,7 +114,7 @@ export default async function HomePage() {
                 <div className="shrink-0">
                   <RatingIcon rating={score} />
                 </div>
-                <p className="text-sm text-gray-700">{desc}</p>
+                <p className="text-base text-gray-700">{desc}</p>
               </div>
             ))}
           </div>
