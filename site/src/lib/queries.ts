@@ -33,7 +33,7 @@ export const postBySlugQuery = groq`
     rating,
     location,
     mapUrl,
-    "gallery": gallery[_key == ^.mainImageKey] + gallery[_key != ^.mainImageKey],
+    gallery,
     body,
     "categories": categories[]->{${categoryProjection}},
     "members": members[]->{name},
