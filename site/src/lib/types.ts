@@ -55,8 +55,7 @@ export interface PostDetail {
   rating: number
   location: string
   mapUrl?: string
-  mainImage: Image
-  gallery?: Image[]
+  gallery: Image[]
   body?: PortableTextBlock[]
   categories: Category[]
   members: {name: string}[]

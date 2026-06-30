@@ -36,10 +36,9 @@ export default async function PostPage({params}: {params: Promise<{slug: string}
   const formattedDate = formatDate(post.date)
   const memberNames = (post.members ?? []).map((m) => m.name)
 
-  const galleryUrls =
-    post.gallery && post.gallery.length > 0
-      ? post.gallery.map((img) => urlFor(img).width(1600).auto('format').url())
-      : []
+  const galleryUrls = (post.gallery ?? []).map((img) =>
+    urlFor(img).width(1600).auto('format').url(),
+  )
 
   // 관련 후기 (같은 카테고리, 최대 3개)
   const allPosts = await getAllPostCards()
@@ -69,18 +68,7 @@ export default async function PostPage({params}: {params: Promise<{slug: string}
           </p>
 
           {/* Image */}
-          {galleryUrls.length > 0 ? (
-            <PostImageGallery images={galleryUrls} alt={post.title} />
-          ) : (
-            <div className="overflow-hidden h-52 sm:h-80 md:h-[512px] bg-gray-100 mb-8 border-2 border-black">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={urlFor(post.mainImage).width(1600).height(1024).fit('crop').auto('format').url()}
-                alt={post.title}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          )}
+          {galleryUrls.length > 0 && <PostImageGallery images={galleryUrls} alt={post.title} />}
 
           {/* Meta */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10 p-5 bg-gray-50 border border-gray-200">
