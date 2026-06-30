@@ -1,4 +1,7 @@
 import {defineField, defineType} from 'sanity'
+import {GalleryCoverInput} from '../components/GalleryCoverInput'
+
+type GalleryImage = {_key: string; asset?: {_ref?: string}}
 
 export const post = defineType({
   name: 'post',
@@ -40,8 +43,7 @@ export const post = defineType({
     defineField({
       name: 'excerpt',
       title: '한 줄 요약',
-      type: 'text',
-      rows: 2,
+      type: 'string',
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -83,17 +85,28 @@ export const post = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'mainImage',
-      title: '대표 이미지',
-      type: 'image',
-      options: {hotspot: true},
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
       name: 'gallery',
-      title: '추가 이미지 (갤러리)',
+      title: '이미지 (갤러리)',
       type: 'array',
       of: [{type: 'image', options: {hotspot: true}}],
+      description: '후기 이미지들. 최소 1개 이상 등록하세요.',
+      validation: (rule) => rule.required().min(1),
+    }),
+    defineField({
+      name: 'mainImageKey',
+      title: '대표 이미지',
+      type: 'string',
+      description: '갤러리에서 카드 썸네일로 쓸 대표 이미지를 선택하세요.',
+      components: {input: GalleryCoverInput},
+      validation: (rule) =>
+        rule.required().custom((key, context) => {
+          const gallery = (context.document?.gallery as GalleryImage[] | undefined) ?? []
+          if (gallery.length === 0) return true // 갤러리 필수 검증에 맡김
+          if (!key) return '갤러리에서 대표 이미지를 선택하세요.'
+          return gallery.some((img) => img._key === key)
+            ? true
+            : '선택한 대표 이미지가 갤러리에 없습니다. 다시 선택하세요.'
+        }),
     }),
     defineField({
       name: 'body',
@@ -138,6 +151,11 @@ export const post = defineType({
     },
   ],
   preview: {
-    select: {title: 'title', subtitle: 'date', media: 'mainImage'},
+    select: {title: 'title', date: 'date', gallery: 'gallery', mainImageKey: 'mainImageKey'},
+    prepare({title, date, gallery, mainImageKey}) {
+      const images = (gallery as GalleryImage[] | undefined) ?? []
+      const cover = images.find((img) => img._key === mainImageKey) ?? images[0]
+      return {title, subtitle: date, media: cover as unknown as undefined}
+    },
   },
 })
