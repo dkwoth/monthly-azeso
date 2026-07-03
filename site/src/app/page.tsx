@@ -73,7 +73,7 @@ export default async function HomePage() {
             <div className="flex gap-8">
               <div>
                 <p className="text-5xl font-black">{postCount}</p>
-                <p className="text-xs text-gray-500 uppercase tracking-widest mt-1">방문 기록</p>
+                <p className="text-xs text-gray-500 uppercase tracking-widest mt-1">후기</p>
               </div>
               <div>
                 <p className="text-5xl font-black">{memberCount}</p>
