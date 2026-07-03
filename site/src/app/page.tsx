@@ -91,9 +91,11 @@ export default async function HomePage() {
             {steps.map(({step, title, desc}) => (
               <div
                 key={step}
-                className="border-2 border-black p-5 hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
+                className="group border-2 border-black p-5 hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
               >
-                <p className="text-4xl font-black text-gray-400 mb-2">{step}</p>
+                <p className="text-4xl font-black text-black group-hover:text-accent transition-colors duration-200 mb-2">
+                  {step}
+                </p>
                 <h3 className="text-base font-black uppercase tracking-wide mb-2">{title}</h3>
                 <p className="text-sm text-gray-600 leading-relaxed">{desc}</p>
               </div>
