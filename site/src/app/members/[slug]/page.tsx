@@ -91,9 +91,20 @@ export default async function MemberPage({params}: {params: Promise<{slug: strin
       </div>
 
       <main className="max-w-6xl mx-auto px-6 py-10">
-        <h2 className="text-xl font-black uppercase tracking-widest border-b-2 border-black pb-3 mb-8">
-          작성한 후기 ({posts.length})
-        </h2>
+        <div className="flex items-center justify-between gap-4 border-b-2 border-black pb-3 mb-8">
+          <h2 className="text-xl font-black uppercase tracking-widest">
+            작성한 후기 ({posts.length})
+          </h2>
+          <Link
+            href="/members"
+            className="shrink-0 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest hover:text-accent transition-colors duration-200"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+            </svg>
+            모든 멤버로
+          </Link>
+        </div>
 
         {posts.length === 0 ? (
           <p className="text-center text-gray-500 py-20 text-sm">
@@ -106,19 +117,6 @@ export default async function MemberPage({params}: {params: Promise<{slug: strin
             ))}
           </div>
         )}
-
-        {/* Back */}
-        <div className="mt-10 pt-8 border-t-2 border-black">
-          <Link
-            href="/members"
-            className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest hover:text-accent transition-colors duration-200"
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-            </svg>
-            모든 멤버로
-          </Link>
-        </div>
       </main>
     </>
   )
