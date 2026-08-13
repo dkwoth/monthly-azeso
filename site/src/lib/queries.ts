@@ -3,19 +3,22 @@ const groq = String.raw
 
 const categoryProjection = `"id": slug.current, label, color`
 
+/** 후기 카드 공통 필드 (목록/멤버 페이지) */
+const postCardProjection = `
+  "slug": slug.current,
+  title,
+  date,
+  "mainImage": coalesce(gallery[_key == ^.mainImageKey][0], gallery[0]),
+  excerpt,
+  rating,
+  location,
+  "categories": categories[]->{${categoryProjection}},
+  "memberNames": members[]->name
+`
+
 /** 후기 목록 (최신순) — 홈/후기 페이지 카드용 */
 export const allPostsQuery = groq`
-  *[_type == "post"] | order(date desc) {
-    "slug": slug.current,
-    title,
-    date,
-    "mainImage": coalesce(gallery[_key == ^.mainImageKey][0], gallery[0]),
-    excerpt,
-    rating,
-    location,
-    "categories": categories[]->{${categoryProjection}},
-    "memberNames": members[]->name
-  }
+  *[_type == "post"] | order(date desc) {${postCardProjection}}
 `
 
 /** 전체 카테고리 */
@@ -62,6 +65,23 @@ export const membersQuery = groq`
     "visitCount": count(*[_type == "post" && references(^._id)])
   }
 `
+
+/** 정적 경로 생성용 멤버 슬러그 목록 */
+export const memberSlugsQuery = groq`
+  *[_type == "member" && defined(slug.current)].slug.current
+`
+
+/** 단일 멤버 + 그 멤버가 작성한 후기 (최신순) */
+export const memberBySlugQuery = groq`{
+  "member": *[_type == "member" && slug.current == $slug][0] {
+    "slug": slug.current,
+    name,
+    bio,
+    image,
+    "favoriteCategories": favoriteCategories[]->{${categoryProjection}}
+  },
+  "posts": *[_type == "post" && author->slug.current == $slug] | order(date desc) {${postCardProjection}}
+}`
 
 /** 통계 (어바웃 페이지) */
 export const statsQuery = groq`{
