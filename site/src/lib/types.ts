@@ -62,11 +62,22 @@ export interface PostDetail {
   author: AuthorData | null
 }
 
-export interface MemberData {
+/** 멤버 기본 정보 (멤버 상세 페이지 헤더용) */
+export interface MemberProfile {
   slug: string
   name: string
   bio?: string
   image?: Image
   favoriteCategories: Category[]
+}
+
+/** 멤버 목록용 (방문 횟수 포함) */
+export interface MemberData extends MemberProfile {
   visitCount: number
+}
+
+/** 멤버 상세: 프로필 + 그 멤버가 작성한 후기 */
+export interface MemberDetail {
+  member: MemberProfile
+  posts: PostCardData[]
 }

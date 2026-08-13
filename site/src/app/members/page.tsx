@@ -23,6 +23,7 @@ export default async function MembersPage() {
           {members.map((member) => (
             <MemberCard
               key={member.slug}
+              slug={member.slug}
               name={member.name}
               bio={member.bio}
               image={

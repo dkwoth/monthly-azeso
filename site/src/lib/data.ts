@@ -3,12 +3,22 @@ import {urlFor} from './image'
 import {
   allPostsQuery,
   allCategoriesQuery,
+  memberBySlugQuery,
+  memberSlugsQuery,
   membersQuery,
   postBySlugQuery,
   postSlugsQuery,
   statsQuery,
 } from './queries'
-import type {Category, MemberData, PostCardData, PostDetail, PostListItem} from './types'
+import type {
+  Category,
+  MemberData,
+  MemberDetail,
+  MemberProfile,
+  PostCardData,
+  PostDetail,
+  PostListItem,
+} from './types'
 
 /** Sanity 후기(목록) → 카드 데이터 (이미지 URL 문자열로 변환) */
 function toCardData(p: PostListItem): PostCardData {
@@ -47,6 +57,23 @@ export async function getMembers(): Promise<MemberData[]> {
   return members.sort(
     (a, b) => b.visitCount - a.visitCount || a.name.localeCompare(b.name, 'ko'),
   )
+}
+
+export async function getMemberSlugs(): Promise<string[]> {
+  return client.fetch<string[]>(memberSlugsQuery)
+}
+
+/** 멤버 프로필 + 그 멤버가 작성자로 지정된 후기 목록 */
+export async function getMemberBySlug(slug: string): Promise<MemberDetail | null> {
+  const result = await client.fetch<{member: MemberProfile | null; posts: PostListItem[]}>(
+    memberBySlugQuery,
+    {slug},
+  )
+  if (!result?.member) return null
+  return {
+    member: {...result.member, favoriteCategories: result.member.favoriteCategories ?? []},
+    posts: (result.posts ?? []).map(toCardData),
+  }
 }
 
 export async function getStats(): Promise<{postCount: number; memberCount: number}> {
