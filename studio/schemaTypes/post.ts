@@ -30,7 +30,6 @@ export const post = defineType({
       title: '슬러그',
       type: 'slug',
       description: 'URL 경로 (예: 2026-02-black-goat)',
-      options: {source: 'title', maxLength: 96},
       validation: (rule) => rule.required(),
     }),
     defineField({

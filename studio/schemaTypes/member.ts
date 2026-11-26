@@ -16,7 +16,6 @@ export const member = defineType({
       title: '슬러그',
       type: 'slug',
       description: '고유 키 (예: seokhyun)',
-      options: {source: 'name', maxLength: 96},
       validation: (rule) => rule.required(),
     }),
     defineField({
