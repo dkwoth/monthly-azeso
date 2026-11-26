@@ -16,7 +16,6 @@ export const category = defineType({
       title: '슬러그',
       type: 'slug',
       description: '필터/URL에 쓰이는 고유 키 (예: korean)',
-      options: {source: 'label', maxLength: 96},
       validation: (rule) => rule.required(),
     }),
     defineField({
