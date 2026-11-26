@@ -51,15 +51,26 @@ Studio에서 저장/발행하면 Sanity 클라우드에 즉시 반영됩니다. 
   - Cloudflare Pages에서 **Deploy Hook URL** 생성
   - Sanity `manage` → API → Webhooks 에 등록 → 글 발행 시 자동 재빌드
 
-### 3. Studio(편집기) — 수동 배포
+### 3. Studio(편집기) — GitHub Actions 자동 배포
 
-스키마·도구 등 **Studio 코드를 바꿨을 때만** 재배포가 필요합니다(콘텐츠 편집과 무관). 자주 바뀌지 않으므로 자동화 없이 수동으로 합니다:
+스키마·도구 등 **Studio 코드를 바꿨을 때만** 재배포가 필요합니다(콘텐츠 편집과 무관). `studio/` 변경이 main에 합쳐지면 [`.github/workflows/deploy-studio.yml`](.github/workflows/deploy-studio.yml)이 `sanity deploy`를 실행합니다. Actions 탭의 **Deploy Studio → Run workflow**로 수동 실행도 가능합니다.
+
+필요한 설정 (Settings → Secrets and variables → Actions):
+
+| 종류 | 이름 | 값 |
+|---|---|---|
+| Secret | `SANITY_AUTH_TOKEN` | sanity.io/manage → 프로젝트 → API → Tokens에서 **Deploy Studio** 권한으로 발급 |
+| Variable | `SANITY_STUDIO_DEPLOY_APP_ID` | 배포 대상 앱 ID (권장) |
+| Variable | `SANITY_STUDIO_HOSTNAME` | 앱 ID 대신 호스트네임 (예: `azeso` → `https://azeso.sanity.studio`) |
+
+- 앱 ID와 호스트네임 중 **하나는 반드시** 있어야 합니다. 둘 다 있으면 앱 ID가 우선입니다.
+- 호스트네임을 잘못 넣으면 Studio가 새로 하나 생기니 주의하세요.
+- 프로젝트 ID/dataset은 사이트 빌드용 `NEXT_PUBLIC_SANITY_*` 변수를 재사용합니다.
+- `autoUpdates: true`는 Sanity 프레임워크만 자동 갱신하며, 우리가 만든 스키마/도구 변경은 위 배포로 반영됩니다.
+
+로컬에서 직접 배포할 때 (`studio/.env` 필요, `npx sanity login` 으로 로그인):
 
 ```bash
 cd studio
 npm run deploy        # = sanity deploy
 ```
-
-- 최초 1회는 **호스트네임**을 물어봅니다(예: `monthly-azeso` → `https://monthly-azeso.sanity.studio`). 이후 같은 명령으로 갱신하며, 호스트네임은 자동 기억됩니다.
-- 로그인된 Sanity 세션을 사용합니다(`npx sanity login`).
-- `autoUpdates: true`는 Sanity 프레임워크만 자동 갱신하며, 우리가 만든 스키마/도구 변경은 위 `npm run deploy`로 반영해야 합니다.
