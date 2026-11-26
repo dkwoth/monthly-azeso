@@ -1,0 +1,72 @@
+name: Deploy Studio
+
+# main에 studio/ 변경이 합쳐지면 Sanity Studio(*.sanity.studio)를 다시 배포한다.
+# Actions 탭에서 수동 실행도 가능 (Run workflow).
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'studio/**'
+  workflow_dispatch:
+
+# 배포가 겹치지 않도록 하나씩 순서대로 실행
+concurrency:
+  group: deploy-studio
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: studio
+
+    env:
+      # Settings → Secrets and variables → Actions 에서 설정
+      # - Secrets:   SANITY_AUTH_TOKEN (sanity.io/manage → API → Tokens, "Deploy Studio" 권한)
+      # - Variables: SANITY_STUDIO_DEPLOY_APP_ID 또는 SANITY_STUDIO_HOSTNAME 중 하나
+      SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
+      # 사이트 빌드와 같은 Sanity 프로젝트이므로 기존 변수를 재사용
+      SANITY_STUDIO_PROJECT_ID: ${{ vars.NEXT_PUBLIC_SANITY_PROJECT_ID }}
+      SANITY_STUDIO_DATASET: ${{ vars.NEXT_PUBLIC_SANITY_DATASET }}
+      SANITY_STUDIO_TITLE: Monthly Azeso
+      SANITY_STUDIO_DEPLOY_APP_ID: ${{ vars.SANITY_STUDIO_DEPLOY_APP_ID }}
+      SANITY_STUDIO_HOSTNAME: ${{ vars.SANITY_STUDIO_HOSTNAME }}
+
+    steps:
+      - name: Check settings
+        working-directory: .
+        run: |
+          missing=0
+          if [ -z "$SANITY_AUTH_TOKEN" ]; then
+            echo "::error::Secret SANITY_AUTH_TOKEN 이 없습니다."
+            missing=1
+          fi
+          if [ -z "$SANITY_STUDIO_PROJECT_ID" ] || [ -z "$SANITY_STUDIO_DATASET" ]; then
+            echo "::error::Variable NEXT_PUBLIC_SANITY_PROJECT_ID / NEXT_PUBLIC_SANITY_DATASET 이 없습니다."
+            missing=1
+          fi
+          # 둘 다 없으면 배포 대상을 고를 수 없음 (CLI가 질문 없이 실패함)
+          if [ -z "$SANITY_STUDIO_DEPLOY_APP_ID" ] && [ -z "$SANITY_STUDIO_HOSTNAME" ]; then
+            echo "::error::Variable SANITY_STUDIO_DEPLOY_APP_ID 또는 SANITY_STUDIO_HOSTNAME 중 하나가 필요합니다."
+            missing=1
+          fi
+          exit $missing
+
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: studio/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      # --yes: 질문 없이 진행. 앱 ID(sanity.cli.ts의 deployment.appId)가 있으면 그 앱에,
+      # 없으면 --url 호스트네임에 배포한다. 존재하지 않는 호스트네임이면 새 Studio가 생기니 주의.
+      - name: Deploy
+        run: npx sanity deploy --yes ${SANITY_STUDIO_HOSTNAME:+--url "$SANITY_STUDIO_HOSTNAME"}
